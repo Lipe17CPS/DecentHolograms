@@ -4,10 +4,11 @@ softdepend:
   - PlaceholderAPI
   - HeadDatabase
   - ProtocolLib
+  - core
 name: DecentHolograms
 description: ${description}
 version: ${version}
-author: d0by
+authors: [ d0by, Lipe17CPS ]
 
 commands:
   decentholograms:

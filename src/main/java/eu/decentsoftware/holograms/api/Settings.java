@@ -16,8 +16,6 @@ public class Settings {
     private static final DecentHolograms DECENT_HOLOGRAMS = DecentHologramsAPI.get();
     private static final FileConfig CONFIG = new FileConfig(DECENT_HOLOGRAMS.getPlugin(), "config.yml");
 
-    @Key("update-checker")
-    public static boolean CHECK_FOR_UPDATES = true;
     @Key(value = "click-cooldown", min = 1, max = 300)
     public static int CLICK_COOLDOWN = 1;
     @Key("default.text")
@@ -44,15 +42,15 @@ public class Settings {
     public static boolean ALLOW_PLACEHOLDERS_INSIDE_ANIMATIONS = false;
 
     public static Map<String, String> CUSTOM_REPLACEMENTS = ImmutableMap.<String, String>builder()
-            .put("[x]", "\u2588")
-            .put("[X]", "\u2588")
-            .put("[/]", "\u258C")
-            .put("[,]", "\u2591")
-            .put("[,,]", "\u2592")
-            .put("[,,,]", "\u2593")
-            .put("[p]", "\u2022")
-            .put("[P]", "\u2022")
-            .put("[|]", "\u23B9")
+            .put("[x]", "█")
+            .put("[X]", "█")
+            .put("[/]", "▌")
+            .put("[,]", "░")
+            .put("[,,]", "▒")
+            .put("[,,,]", "▓")
+            .put("[p]", "•")
+            .put("[P]", "•")
+            .put("[|]", "⎹")
             .build();
 
     // ========================================= //

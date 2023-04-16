@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 
 @UtilityClass
 public final class HeadDatabaseUtils {
-
     public static final HeadDatabaseAPI API = new HeadDatabaseAPI();
 
     @Nullable

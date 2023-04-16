@@ -5,7 +5,6 @@ import eu.decentsoftware.holograms.api.DecentHolograms;
 import eu.decentsoftware.holograms.api.DecentHologramsAPI;
 import eu.decentsoftware.holograms.api.commands.CommandValidator;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
-import eu.decentsoftware.holograms.api.utils.BungeeUtils;
 import eu.decentsoftware.holograms.api.utils.Common;
 import eu.decentsoftware.holograms.api.utils.PAPI;
 import eu.decentsoftware.holograms.api.utils.location.LocationUtils;
@@ -84,17 +83,6 @@ public abstract class ActionType {
 				//
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), PAPI.setPlaceholders(player, string.replace("{player}", player.getName())));
 			});
-			return true;
-		}
-	};
-
-	public static final ActionType CONNECT = new ActionType("CONNECT") {
-		@Override
-		public boolean execute(Player player, String... args) {
-			Validate.notNull(player);
-			if (args != null && args.length >= 1) {
-				BungeeUtils.connect(player, args[0]);
-			}
 			return true;
 		}
 	};
