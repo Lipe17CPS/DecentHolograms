@@ -77,7 +77,7 @@ public class PAPI {
         }
 
         if (isAvailableCore()) {
-            return Patterns.PLACEHOLDER.matches(string);
+            return Patterns.PLACEHOLDER.getPattern().matcher(string).find();
         }
 
         return false;

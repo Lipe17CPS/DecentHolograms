@@ -59,5 +59,4 @@ processResources {
 }
 
 shadowJar {
-    relocate "org.bstats", "eu.decentsoftware.holograms.metrics"
 }
