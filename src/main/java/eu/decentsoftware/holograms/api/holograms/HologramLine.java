@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class HologramLine extends HologramObject {
-
     protected static final DecentHolograms DECENT_HOLOGRAMS = DecentHologramsAPI.get();
 
     /*
@@ -243,6 +242,7 @@ public class HologramLine extends HologramObject {
 
             containsAnimations = DECENT_HOLOGRAMS.getAnimationManager().containsAnimations(text);
             containsPlaceholders = PAPI.containsPlaceholders(text);
+
         }
         setOffsetY(type.getOffsetY());
     }
@@ -256,7 +256,7 @@ public class HologramLine extends HologramObject {
         if (permission != null && !permission.trim().isEmpty()) map.put("permission", permission);
         if (getOffsetX() != 0.0d) map.put("offsetX", offsetX);
         if (getOffsetZ() != 0.0d) map.put("offsetZ", offsetZ);
-        if (parent == null || getFacing() != parent.getParent().getFacing()) map.put("facing", facing);
+        if (parent == null || getFacing() != Objects.requireNonNull(parent).getParent().getFacing()) map.put("facing", facing);
         return map;
     }
 
@@ -309,6 +309,7 @@ public class HologramLine extends HologramObject {
             if (!hasFlag(EnumFlag.DISABLE_PLACEHOLDERS)) {
                 string = parsePlaceholders(string, player, containsPlaceholders);
             }
+
             // Update the cached text.
             playerTextMap.put(uuid, string);
         }
@@ -341,8 +342,8 @@ public class HologramLine extends HologramObject {
     private String parsePlaceholders(@NotNull String string, @NonNull Player player, boolean papi) {
         // Replace internal placeholders.
         string = string.replace("{player}", player.getName());
-        string = string.replace("{page}", String.valueOf(hasParent() ? parent.getIndex() + 1 : 1));
-        string = string.replace("{pages}", String.valueOf(hasParent() ? parent.getParent().size() : 1));
+        string = string.replace("{page}", String.valueOf(hasParent() ? Objects.requireNonNull(parent).getIndex() + 1 : 1));
+        string = string.replace("{pages}", String.valueOf(hasParent() ? Objects.requireNonNull(parent).getParent().size() : 1));
 
         // Replace PlaceholderAPI placeholders.
         if (papi) {
@@ -354,13 +355,14 @@ public class HologramLine extends HologramObject {
                 string = "";
             }
         }
+
         return string;
     }
 
     @NonNull
     // Parses custom replacements that can be defined in the config
     private String parseCustomReplacements() {
-        if (content != null && !content.isEmpty()) {
+        if (!content.isEmpty()) {
             for (Map.Entry<String, String> replacement : Settings.CUSTOM_REPLACEMENTS.entrySet()) {
                 content = content.replace(replacement.getKey(), replacement.getValue());
             }
@@ -413,36 +415,38 @@ public class HologramLine extends HologramObject {
             }
             if (!isVisible(player) && canShow(player) && isInDisplayRange(player)) {
                 switch (type) {
-                    case TEXT:
+                    case TEXT -> {
                         nms.showFakeEntityArmorStand(player, getLocation(), entityIds[0], true, true, false);
                         nms.updateFakeEntityCustomName(player, getText(player, true), entityIds[0]);
-                        break;
-                    case HEAD:
-                    case SMALLHEAD:
+                    }
+
+                    case HEAD, SMALLHEAD -> {
                         nms.showFakeEntityArmorStand(player, getLocation(), entityIds[0], true, HologramLineType.HEAD != type, false);
                         ItemStack itemStack = containsPlaceholders ? HologramItem.parseItemStack(item.getContent(), player) : item.parse();
                         nms.helmetFakeEntity(player, itemStack, entityIds[0]);
-                        break;
-                    case ICON:
+                    }
+
+                    case ICON -> {
                         nms.showFakeEntityArmorStand(player, getLocation(), entityIds[0], true, true, false);
                         ItemStack itemStack1 = containsPlaceholders ? HologramItem.parseItemStack(item.getContent(), player) : item.parse();
                         nms.showFakeEntityItem(player, getLocation(), itemStack1, entityIds[1]);
                         nms.attachFakeEntity(player, entityIds[0], entityIds[1]);
-                        break;
-                    case ENTITY:
+                    }
+
+                    case ENTITY -> {
                         EntityType entityType = new HologramEntity(PAPI.setPlaceholders(player, getEntity().getContent())).getType();
                         if (entityType == null || !DecentEntityType.isAllowed(entityType)) break;
                         nms.showFakeEntityArmorStand(player, getLocation(), entityIds[0], true, true, false);
-
                         if (entity.getType().isAlive()) {
                             nms.showFakeEntityLiving(player, getLocation(), entityType, entityIds[1]);
                         } else {
                             nms.showFakeEntity(player, getLocation(), entityType, entityIds[1]);
                         }
                         nms.attachFakeEntity(player, entityIds[0], entityIds[1]);
-                        break;
-                    default:
-                        break;
+                    }
+
+                    default -> {
+                    }
                 }
                 viewers.add(player.getUniqueId());
             }

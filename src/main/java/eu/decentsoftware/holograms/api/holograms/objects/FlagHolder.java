@@ -8,7 +8,6 @@ import java.util.*;
 
 @Getter
 public abstract class FlagHolder {
-
     protected final @NonNull Set<EnumFlag> flags = Collections.synchronizedSet(new HashSet<>());
 
     public void addFlags(EnumFlag @NonNull ... flags) {

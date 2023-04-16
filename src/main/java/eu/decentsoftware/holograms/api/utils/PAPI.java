@@ -1,6 +1,7 @@
 package eu.decentsoftware.holograms.api.utils;
 
 import com.redefantasy.core.shared.misc.utils.Patterns;
+import com.redefantasy.core.shared.misc.utils.Printer;
 import com.redefantasy.core.spigot.misc.placeholders.PlaceholderController;
 import lombok.experimental.UtilityClass;
 import me.clip.placeholderapi.PlaceholderAPI;
